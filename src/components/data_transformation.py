@@ -17,7 +17,8 @@ from src.utils import save_object
 
 
 @dataclass
-class DataTransformationConfig:  #Now create similar class used in data_ingestion
+class DataTransformationConfig:  #Now create similar class used in data_ingestion 
+    #We always prepare config file using dataclass in every module 
     preprocesser_obj_file_path = os.path.join('artifacts', "preprocessor.pkl")
 
     
