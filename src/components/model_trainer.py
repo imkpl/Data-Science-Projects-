@@ -102,7 +102,7 @@ class ModelTrainer: #For training the model
                 raise CustomException("No best model found")
             logging.info(f"Best found model on both training and testing dataset")
 
-            save_object(
+            save_object( #To save this pkl file in same location we also added this into utils file and imported save_object from utils earlier 
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
             )
@@ -112,9 +112,6 @@ class ModelTrainer: #For training the model
             r2_square = r2_score(y_test, predicted)
             return r2_square
             
-
-
-
             
         except Exception as e:
             raise CustomException(e,sys)
