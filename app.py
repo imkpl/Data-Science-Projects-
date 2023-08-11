@@ -1,0 +1,53 @@
+from flask import Flask,request,render_template
+
+
+
+
+
+
+
+
+import numpy as np
+import pandas as pd
+
+from sklearn.preprocessing import StandardScaler
+from src.pipeline.predict_pipeline import CustomData, PredictPipeline
+
+application=Flask(__name__) #Creating a flask app name
+
+app=application
+
+## Routing for a home page
+
+@app.route('/')
+def index():
+    return render_template('index.html') 
+
+@app.route('/predictdata',methods=['GET','POST']) #for prediction 
+def predict_datapoint():
+    if request.method=='GET':
+        return render_template('home.html') #for returning to home.html to fill the data in the homepage 
+    else: #for creating data by getting info from HTML
+        data=CustomData( 
+            gender=request.form.get('gender'),
+            race_ethnicity=request.form.get('ethnicity'),
+            parental_level_of_education=request.form.get('parental_level_of_education'),
+            lunch=request.form.get('lunch'),
+            test_preparation_course=request.form.get('test_preparation_course'),
+            reading_score=float(request.form.get('writing_score')),
+            writing_score=float(request.form.get('reading_score'))
+
+        )
+        pred_df=data.get_data_as_data_frame() #imported from predict_pipeline to return entire dataframe
+        print(pred_df)
+        print("Before Prediction")
+
+        predict_pipeline=PredictPipeline() #imported from predict_pipeline to return the pred (predictions)
+        print("Mid Prediction")
+        results=predict_pipeline.predict(pred_df)
+        print("after Prediction")
+        return render_template('home.html',results=results[0]) #as it will be in list format
+    
+
+if __name__=="__main__":
+    app.run(host="0.0.0.0", port = 8000, debug= True)        
